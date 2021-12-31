@@ -1,0 +1,35 @@
+{
+  "name": "movie-trailers-api",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Returns movie trailers",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sithumn/movie-trailers-api.git"
+  },
+  "keywords": [
+    "movies",
+    "entertainment"
+  ],
+  "author": "Sithum Nissanka (sithum.nissanka[at]gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sithumn/movie-trailers-api/issues"
+  },
+  "homepage": "https://github.com/sithumn/movie-trailers-api#readme",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "fastify": "^3.25.3",
+    "fastify-response-caching": "0.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.5.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3"
+  }
+}
