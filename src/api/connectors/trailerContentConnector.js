@@ -7,32 +7,31 @@ import config from '../../config.js';
  * @param {string} movieId
  */
 export async function getTrailerContentFromMovieId(movieId) {
-  const {url, queryParams} = config.tmdb;
+  const { url, queryParams } = config.tmdb;
 
   return axios
-    .get(`${url}/${movieId}`, {params: queryParams})
-};
+    .get(`${url}/${movieId}`, { params: queryParams });
+}
 
 /**
  * Get trailer video from TMDB content
  * @param {json} content
  */
-export const getTrailerContent = content => {
+export const getTrailerContent = (content) => {
   if (content && content.videos && content.videos.results) {
     return content.videos.results;
-  } else {
-    return [];
   }
+  return [];
 };
 
 /**
  * Filter out trailer videos from video content
  * @param {Array} videoContentList
  */
-export const getTrailerUrlMappedContent = videoContentList => {
+export const getTrailerUrlMappedContent = (videoContentList) => {
   if (videoContentList) {
-    return videoContentList.map(videoContent => {
-      if('Teaser'.toLowerCase() === videoContent.type.toLowerCase() || 'Trailer'.toLowerCase() === videoContent.type.toLowerCase()) {
+    return videoContentList.map((videoContent) => {
+      if ('Teaser'.toLowerCase() === videoContent.type.toLowerCase() || 'Trailer'.toLowerCase() === videoContent.type.toLowerCase()) {
         if ('YouTube'.toLowerCase() === videoContent.site.toLowerCase()) {
           delete videoContent.id;
 
@@ -41,9 +40,8 @@ export const getTrailerUrlMappedContent = videoContentList => {
         }
       }
     });
-  } else {
-    return [];
   }
+  return [];
 };
 
 /**
@@ -53,5 +51,5 @@ export const getTrailerUrlMappedContent = videoContentList => {
 export async function getTrailerUrlsFromMovieId(movieId) {
   return getTrailerContentFromMovieId(movieId)
     .then(getTrailerContent)
-    .then(getTrailerUrlMappedContent)
-};
+    .then(getTrailerUrlMappedContent);
+}
