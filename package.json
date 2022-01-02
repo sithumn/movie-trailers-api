@@ -5,8 +5,10 @@
   "description": "Returns movie trailers",
   "main": "src/server.js",
   "scripts": {
-    "test": "mocha test/**/*.spec.js",
-    "start": "node src/server.js"
+    "test": "mocha --recursive",
+    "start": "node src/server.js",
+    "lint": "eslint src/**/*.js test/**/*.spec.js",
+    "lint-fix": "lint --fix"
   },
   "repository": {
     "type": "git",

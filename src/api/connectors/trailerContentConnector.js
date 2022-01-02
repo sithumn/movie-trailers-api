@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import config from '../../config.js';
+import handledPromise from '../helper.js';
 
 /**
  * Do api call with IMDB movie id to get video content from TMDB
@@ -9,37 +10,38 @@ import config from '../../config.js';
 export async function getTrailerContentFromMovieId(movieId) {
   const { url, queryParams } = config.tmdb;
 
-  return axios
-    .get(`${url}/${movieId}`, { params: queryParams });
+  return handledPromise(axios.get(`${url}/${movieId}`, { params: queryParams }));
 }
 
 /**
  * Get trailer video from TMDB content
  * @param {json} content
  */
-export const getTrailerContent = (content) => {
-  if (content && content.videos && content.videos.results) {
-    return content.videos.results;
-  }
-  return [];
+export async function getTrailerContent(content) {
+  const results = content?.payload?.message?.videos?.results;
+
+  return results !== undefined ? results : [];
 };
 
 /**
  * Filter out trailer videos from video content
  * @param {Array} videoContentList
  */
-export const getTrailerUrlMappedContent = (videoContentList) => {
+export async function getTrailerUrlMappedContent(videoContentList) {
   if (videoContentList) {
-    return videoContentList.map((videoContent) => {
-      if ('Teaser'.toLowerCase() === videoContent.type.toLowerCase() || 'Trailer'.toLowerCase() === videoContent.type.toLowerCase()) {
-        if ('YouTube'.toLowerCase() === videoContent.site.toLowerCase()) {
-          delete videoContent.id;
+    const isTrailer = videoContent => ('Teaser'.toLowerCase() === videoContent.type.toLowerCase() || 
+      'Trailer'.toLowerCase() === videoContent.type.toLowerCase());
+    const isFromYoutube = videoContent => 'YouTube'.toLowerCase() === videoContent.site.toLowerCase();
+    const isTrailerFromYoutube = videoContent => isTrailer(videoContent) && isFromYoutube(videoContent);
 
-          videoContent.url = `${config.trailer.youtubeBase}${videoContent.key}`;
-          return videoContent;
-        }
-      }
-    });
+    return videoContentList
+      .filter(isTrailerFromYoutube)
+      .map(videoContent => {
+        delete videoContent.id;
+        videoContent.url = `${config.trailer.youtubeBase}${videoContent.key}`;
+        
+        return videoContent;
+      });
   }
   return [];
 };

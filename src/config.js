@@ -1,5 +1,5 @@
 export default {
-    cacheTimeout: 24 * 60 * 60 * 1000,
+    cacheTimeout: 86400000,
     tmdb: {
         url: 'https://api.themoviedb.org/3/movie',
         queryParams: {

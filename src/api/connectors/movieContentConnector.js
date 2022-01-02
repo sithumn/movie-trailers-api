@@ -1,5 +1,5 @@
 import axios from 'axios';
-import handledPromise from './helper.js';
+import handledPromise from '../helper.js';
 
 /**
  * Do API call to get movie content from viaplay
@@ -15,8 +15,10 @@ export async function getMovieContentFromResource(resourceLink) {
    *
    * @param {json} content
    */
-// TODO handle null content
-const getMovieIdFromContent = (content) => content?._embedded['viaplay:blocks'][0]?._embedded['viaplay:product']?.content?.imdb?.id
+export async function getMovieIdFromContent (content) {
+  return content.success ? 
+    content?.payload?.message?._embedded['viaplay:blocks'][0]?._embedded['viaplay:product']?.content?.imdb?.id : content
+}
 
 /**
    * Get IMDB id from viaplay resource link
